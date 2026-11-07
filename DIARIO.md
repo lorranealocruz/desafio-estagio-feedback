@@ -9,3 +9,6 @@ e o que aprendeu. Errar faz parte; o que conta é o que você fez com o erro.
 - **Decidi, e por quê:**
 - **Deu errado:**
 - **Aprendi:**
+
+## 2026-11-07
+- **Aprendi: sobre o projeto e iniciei lendo sobre os dados. Criei o repositório e marquei para conversar com alguém do varejo**
