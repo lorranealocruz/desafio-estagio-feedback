@@ -18,3 +18,4 @@ Também existe um problema de feedback vago, pois um texto frio ou injusto pode 
 
 ## 2026-11-08
 - **Aprendi:** Criação de do contexto. Essa etapa é importante porque mostra situações em que o vendedor vendeu menos, como: férias, problemas pessoais, trabalhar na escala 5x2, ser funcionário novo. A anotação sensível do Marcelo não deve ser repassada à IA, pois foi um problema pessoal. As demais anotações podem ser incluídas sem alterações.
+Criação da função gerar_ficha() que recebe o identificador do vendedor e o mês. Essa função compara o desempenho do vendedor com o mês anterior e com os resultados da loja, sem criar competições entre os colegas.
