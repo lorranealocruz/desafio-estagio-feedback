@@ -1,7 +1,8 @@
-
 import streamlit as st
 from src.indicadores import calcular_indicadores
 from src.ficha import gerar_ficha
+from src.ia import gerar_feedback
+from src.validacao import validar_numeros
 
 
 def moeda(valor):
@@ -131,6 +132,7 @@ vendedor_selecionado = opcoes_vendedores[
 
 vendedor_id = vendedor_selecionado["vendedor_id"]
 
+
 # Gera a ficha de contexto
 try:
     ficha = gerar_ficha(
@@ -159,5 +161,82 @@ try:
     else:
         st.info("Nenhuma anotação disponível para esse mês.")
 
+    st.divider()
+
+    st.subheader("Feedback individual com inteligência artificial")
+
+    if st.button("Gerar feedback com IA"):
+
+        with st.spinner(
+            "A inteligência artificial está elaborando o feedback..."
+        ):
+
+            feedback = gerar_feedback(ficha)
+
+            st.session_state["feedback_gerado"] = feedback
+
+            st.session_state["feedback_editavel"] = "\n\n".join([
+                f"Cuidados: {feedback['cuidados']}",
+                f"Abertura: {feedback['abertura']}",
+                f"Ponto forte: {feedback['ponto_forte']}",
+                f"Ponto a melhorar: {feedback['ponto_a_melhorar']}",
+                f"Pergunta aberta: {feedback['pergunta_aberta']}",
+                f"Combinado para a semana: {feedback['combinado_para_a_semana']}",
+                f"Acompanhamento: {feedback['acompanhamento']}",
+                f"Fontes: {', '.join(feedback['fontes'])}"
+            ])
+
+            st.session_state["feedback_aprovado"] = False
+
+            st.success("Feedback gerado com sucesso!")
+
+     
+    # Exibe e valida o feedback gerado
+    if "feedback_gerado" in st.session_state:
+
+        st.markdown("### Revisão do feedback")
+
+        texto_feedback = st.text_area(
+            "Revise e edite o feedback antes de aprovar:",
+            key="feedback_editavel",
+            height=400
+        )
+
+        # Valida o texto depois das edições
+        resultado_validacao = validar_numeros(
+            texto_feedback,
+            ficha
+        )
+
+        st.divider()
+        st.subheader("Verificação de confiabilidade")
+
+        if resultado_validacao["valido"]:
+
+            st.success(
+                "Todos os números encontrados no feedback "
+                "foram identificados na ficha do vendedor."
+            )
+
+            if st.checkbox(
+                "Confirmo que revisei e aprovo este feedback.",
+                key="feedback_aprovado"
+            ):
+                st.success("Feedback aprovado pelo gerente!")
+
+        else:
+
+            st.error(
+                "Existem números que não constam na ficha. "
+                "Revise o feedback antes de aprovar."
+            )
+
+            st.write(
+                "Números não encontrados:",
+                resultado_validacao["numeros_nao_encontrados"]
+            )
+
+            st.session_state["feedback_aprovado"] = False
+
 except Exception as erro:
-    st.error(f"Erro ao gerar ficha de contexto: {erro}")
+    st.error(f"Erro ao gerar ficha ou feedback: {erro}")

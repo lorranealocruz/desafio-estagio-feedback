@@ -20,3 +20,5 @@ Também existe um problema de feedback vago, pois um texto frio ou injusto pode 
 - **Aprendi:** Criação de do contexto. Essa etapa é importante porque mostra situações em que o vendedor vendeu menos, como: férias, problemas pessoais, trabalhar na escala 5x2, ser funcionário novo. A anotação sensível do Marcelo não deve ser repassada à IA, pois foi um problema pessoal. As demais anotações podem ser incluídas sem alterações.
 Criação da função gerar_ficha() que recebe o identificador do vendedor e o mês. Essa função compara o desempenho do vendedor com o mês anterior e com os resultados da loja, sem criar competições entre os colegas.
 - **Deu errado:** Na questão da API key. Eu já usei o Openrouter e dava certo, mas agora aparece que estou sem créditos e a aplicação não está funcionando.
+Houve um problema na interpretação dos números brasileiros, o validador estava removendo pontos e vírgulas de maneira inadequada em alguns casos.
+- **Decidi, e por quê:** Usei a API key gratuita do Gemini e deu certo, fiz apenas algumas modificações no .env. Também tive que fazer várias alterações nas validações de números.

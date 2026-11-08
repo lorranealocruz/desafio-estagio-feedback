@@ -16,29 +16,44 @@ def converter_numero(texto):
 
 
 def extrair_numeros(texto):
-    """Extrai números de um texto, ignorando datas."""
+    import re
 
-    # Remove datas como 03/10/2026 e 2026-10-03
+    # Remove referências numéricas como [1], [2], [3]
+    texto = re.sub(r"\[\s*\d+\s*\]", "", texto)
+
+    # Remove datas
     texto = re.sub(
         r"\b\d{2}/\d{2}/\d{4}\b|\b\d{4}-\d{2}(?:-\d{2})?\b",
-        " ",
+        "",
         texto
     )
 
-    padrao = r"(?<![\w/])(?:R\$\s*)?-?\d+(?:[.,]\d+)*(?:\s*%)?(?![\w/])"
+    # Remove anos isolados
+    texto = re.sub(r"\b(?:19|20)\d{2}\b", "", texto)
 
-    encontrados = re.findall(padrao, texto)
+    # Extrai números com separadores decimais e de milhar
+    encontrados = re.findall(
+        r"(?<![\w])(?:R\$\s*)?-?\d+(?:\.\d{3})*(?:,\d+)?%?",
+        texto
+    )
 
     numeros = []
 
-    for item in encontrados:
+    for valor in encontrados:
+
+        valor = valor.replace("R$", "").strip()
+        valor = valor.replace("%", "")
+
+        # Converte formato brasileiro para formato numérico
+        valor = valor.replace(".", "").replace(",", ".")
+
         try:
-            numeros.append(converter_numero(item))
+            numeros.append(float(valor))
         except ValueError:
             continue
 
     return numeros
-
+  
 
 def coletar_numeros_ficha(ficha):
     """Reúne todos os números disponíveis na ficha de contexto."""
@@ -96,3 +111,83 @@ def validar_numeros(texto, ficha, tolerancia=0.02):
         "valido": len(nao_encontrados) == 0,
         "numeros_nao_encontrados": nao_encontrados
     }
+
+
+def validar_associacoes(texto, ficha, tolerancia=0.02):
+    import re
+
+    # Procura referências no formato:
+    # [indicadores_mes.atingimento: 164,86%]
+    padrao = (
+        r"\[([a-zA-Z_][\w.]*)\s*:\s*"
+        r"(?:R\$\s*)?(-?\d[\d.,]*)\s*(%)?\]"
+    )
+
+    referencias = re.findall(padrao, texto)
+
+    erros = []
+
+    # Indicadores armazenados como proporção na ficha
+    indicadores_percentuais = {
+        "conversao",
+        "atingimento"
+    }
+
+    for caminho, valor_texto, percentual in referencias:
+
+        # Percorre o caminho, por exemplo:
+        # indicadores_mes -> atingimento
+        partes = caminho.split(".")
+        valor_ficha = ficha
+
+        try:
+            for parte in partes:
+                valor_ficha = valor_ficha[parte]
+
+            valor_ficha = float(valor_ficha)
+
+        except (KeyError, TypeError, ValueError):
+            erros.append({
+                "referencia": caminho,
+                "valor_informado": valor_texto,
+                "motivo": "Fonte não encontrada na ficha."
+            })
+            continue
+
+        # Converte o valor escrito para número
+        numeros = extrair_numeros(valor_texto)
+
+        if not numeros:
+            erros.append({
+                "referencia": caminho,
+                "valor_informado": valor_texto,
+                "motivo": "Não foi possível interpretar o valor."
+            })
+            continue
+
+        valor_informado = numeros[0]
+
+        # A ficha guarda conversão e atingimento
+        # como proporções. O texto apresenta percentuais.
+        nome_indicador = partes[-1]
+
+        if (
+            percentual
+            and nome_indicador in indicadores_percentuais
+        ):
+            valor_ficha *= 100
+
+        if abs(valor_informado - valor_ficha) > tolerancia:
+            erros.append({
+                "referencia": caminho,
+                "valor_informado": valor_informado,
+                "valor_correto": valor_ficha,
+                "motivo": "O valor não corresponde ao indicador."
+            })
+
+    return {
+        "valido": len(referencias) > 0 and len(erros) == 0,
+        "total_referencias": len(referencias),
+        "erros": erros
+    }
+
