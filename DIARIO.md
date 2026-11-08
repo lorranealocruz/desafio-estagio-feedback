@@ -15,3 +15,6 @@ e o que aprendeu. Errar faz parte; o que conta é o que você fez com o erro.
 Também existe um problema de feedback vago, pois um texto frio ou injusto pode desmotivar a pessoa ou causar um problema trabalhista. Números são importantes mas é preciso analisar se o vendedor estava de férias ou se teve algum problema pessoal, se a loja estava em reforma.
 - **Decidi, e por quê:** Fiquei com dúvidas na criação de pastas, de como ficaria a organização. Pedi ajuda ao Gemnini mas não gostei da estrutura que me enviou, gostei mais da estrutura de pastas que o GPT me sugeriu. Acabei excluindo as pastas contexto.py e roteiro.py porque vi que talvez não seria necessário no momento.
 **Aprendi:** Consegui abrir a aplicação com o Streamlit que mostra os indicadores de desempenho.
+
+## 2026-11-08
+- **Aprendi:** Criação de do contexto. Essa etapa é importante porque mostra situações em que o vendedor vendeu menos, como: férias, problemas pessoais, trabalhar na escala 5x2, ser funcionário novo. A anotação sensível do Marcelo não deve ser repassada à IA, pois foi um problema pessoal. As demais anotações podem ser incluídas sem alterações.
