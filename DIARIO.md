@@ -22,3 +22,6 @@ Criação da função gerar_ficha() que recebe o identificador do vendedor e o m
 - **Deu errado:** Na questão da API key. Eu já usei o Openrouter e dava certo, mas agora aparece que estou sem créditos e a aplicação não está funcionando.
 Houve um problema na interpretação dos números brasileiros, o validador estava removendo pontos e vírgulas de maneira inadequada em alguns casos.
 - **Decidi, e por quê:** Usei a API key gratuita do Gemini e deu certo, fiz apenas algumas modificações no .env. Também tive que fazer várias alterações nas validações de números.
+
+## 2026-11-09
+- **Decidi, e por quê:** Criação de três camadas de proteção: validar números, validar associações, e validar referências completas. Fiz várias implementações no código para captar erros de validação. Se na hora da edição eu trocar o valor das vendas pelo ticket, ou colocar um número falso, dá erro e o relatório não é aprovado. Criação da função para salvar relatório, inclusive os editados (que foram aprovados). Testei um relatório colocando 3 pontos de exclamação (!!!) e foi aprovado. Os relatórios aprovados ficam salvos em saidas/feedbacks_aprovados.csv. Criação do botão aprovar e salvar feedback.
