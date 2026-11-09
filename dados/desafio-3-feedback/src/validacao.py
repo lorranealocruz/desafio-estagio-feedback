@@ -191,3 +191,37 @@ def validar_associacoes(texto, ficha, tolerancia=0.02):
         "erros": erros
     }
 
+
+def validar_referencias_completas(texto):
+    """
+    Verifica se os números apresentados no feedback
+    estão acompanhados de referências aos indicadores.
+    """
+
+    import re
+
+    # Identifica referências completas, como:
+    # [indicadores_mes.conversao: 35,58%]
+    # [indicadores_mes.valor_vendido: R$ 67.234,70]
+
+    padrao_referencia = (
+        r"\[[a-zA-Z_][\w.]*\s*:\s*"
+        r"(?:R\$\s*)?-?\d+(?:\.\d{3})*(?:,\d+)?%?\]"
+    )
+
+    # Remove as referências completas do texto
+    texto_sem_referencias = re.sub(
+        padrao_referencia,
+        "",
+        texto
+    )
+
+    # Procura números que sobraram sem referência
+    numeros_sem_referencia = extrair_numeros(
+        texto_sem_referencias
+    )
+
+    return {
+        "valido": len(numeros_sem_referencia) == 0,
+        "numeros_sem_referencia": numeros_sem_referencia
+    }

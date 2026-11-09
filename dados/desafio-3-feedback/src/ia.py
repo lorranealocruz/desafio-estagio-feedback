@@ -1,4 +1,4 @@
-
+import time
 import os
 import json
 from pathlib import Path
@@ -156,16 +156,37 @@ def gerar_feedback(ficha):
         "x-goog-api-key": API_KEY
     }
 
+    
     try:
-        resposta = requests.post(
-            URL_API,
-            headers=headers,
-            json=payload,
-            timeout=60
-        )
+        # Realiza até 3 tentativas de comunicação
+        for tentativa in range(3):
 
+            resposta = requests.post(
+                URL_API,
+                headers=headers,
+                json=payload,
+                timeout=60
+            )
+
+            # Verifica se ocorreu um erro temporário
+            if resposta.status_code not in [429, 500, 502, 503, 504]:
+                break
+
+            # Aguarda antes de tentar novamente
+            if tentativa < 2:
+                espera = 2 ** (tentativa + 1)
+
+                print(
+                    f"Gemini temporariamente indisponível. "
+                    f"Nova tentativa em {espera} segundos..."
+                )
+
+                time.sleep(espera)
+
+        # Verifica se a resposta HTTP foi bem-sucedida
         resposta.raise_for_status()
 
+        # Converte a resposta para JSON
         resultado = resposta.json()
 
         conteudo = (

@@ -2,7 +2,11 @@ import streamlit as st
 from src.indicadores import calcular_indicadores
 from src.ficha import gerar_ficha
 from src.ia import gerar_feedback
-from src.validacao import validar_numeros
+from src.validacao import (
+    validar_numeros,
+    validar_associacoes,
+    validar_referencias_completas
+)
 
 
 def moeda(valor):
@@ -191,7 +195,7 @@ try:
             st.success("Feedback gerado com sucesso!")
 
      
-    # Exibe e valida o feedback gerado
+    # Exibe e valida o feedback gerado  
     if "feedback_gerado" in st.session_state:
 
         st.markdown("### Revisão do feedback")
@@ -202,20 +206,36 @@ try:
             height=400
         )
 
-        # Valida o texto depois das edições
-        resultado_validacao = validar_numeros(
+        # Validação 1: verifica se os números existem na ficha
+        resultado_numeros = validar_numeros(
             texto_feedback,
             ficha
+        )
+
+        # Validação 2: verifica se os valores correspondem
+        # aos indicadores citados
+        resultado_associacoes = validar_associacoes(
+            texto_feedback,
+            ficha
+        )
+
+        # Validação 3: verifica se os números possuem referências
+        resultado_referencias = validar_referencias_completas(
+            texto_feedback
         )
 
         st.divider()
         st.subheader("Verificação de confiabilidade")
 
-        if resultado_validacao["valido"]:
+        # As três validações precisam ser aprovadas
+        if (
+            resultado_numeros["valido"]
+            and resultado_associacoes["valido"]
+            and resultado_referencias["valido"]
+        ):
 
             st.success(
-                "Todos os números encontrados no feedback "
-                "foram identificados na ficha do vendedor."
+                "Todas as verificações foram aprovadas!"
             )
 
             if st.checkbox(
@@ -226,17 +246,32 @@ try:
 
         else:
 
-            st.error(
-                "Existem números que não constam na ficha. "
-                "Revise o feedback antes de aprovar."
-            )
-
-            st.write(
-                "Números não encontrados:",
-                resultado_validacao["numeros_nao_encontrados"]
-            )
-
+            # Impede aprovação de feedback inválido
             st.session_state["feedback_aprovado"] = False
+
+            st.error(
+                "O feedback apresenta problemas e não pode ser aprovado."
+            )
+
+            if not resultado_numeros["valido"]:
+                st.write("**Números não encontrados na ficha:**")
+                st.write(
+                    resultado_numeros["numeros_nao_encontrados"]
+                )
+
+            if not resultado_associacoes["valido"]:
+                st.write("**Problemas nas referências dos indicadores:**")
+
+                for erro in resultado_associacoes["erros"]:
+                    st.write(f"- Referência: {erro['referencia']}")
+                    st.write(f"  Valor informado: {erro['valor_informado']}")
+                    st.write(f"  Motivo: {erro['motivo']}")
+
+            if not resultado_referencias["valido"]:
+                st.write("**Números sem referência:**")
+                st.write(
+                    resultado_referencias["numeros_sem_referencia"]
+                )
 
 except Exception as erro:
     st.error(f"Erro ao gerar ficha ou feedback: {erro}")
