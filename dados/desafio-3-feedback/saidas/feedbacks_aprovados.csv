@@ -1,0 +1,31 @@
+﻿data_aprovacao,vendedor_id,vendedor_nome,mes_referencia,feedback
+2026-11-09T15:20:32-03:00,C0035,Marcelo Duarte,2026-10,"Cuidados: Respeitar o contexto de outubro de 2026, evitando qualquer cobrança sobre anotações sensíveis.
+
+Abertura: Olá, Marcelo. Vamos analisar os resultados de outubro de 2026 e traçar nossas metas para a próxima semana.
+
+Ponto forte: Você apresentou um excelente desempenho no atingimento da meta [indicadores_mes.atingimento: 164,86%] e superou o ticket médio da loja [indicadores_loja.ticket_medio: R$ 322,19] com o seu ticket médio [indicadores_mes.ticket_medio: R$ 454,29].
+
+Ponto a melhorar: Sua taxa de conversão [indicadores_mes.conversao: 35,58%] ficou abaixo do mês anterior [indicadores_mes_anterior.conversao: 43,65%] e da média da loja [indicadores_loja.conversao: 37,85%].
+
+Pergunta aberta: O que você percebeu no atendimento que pode ter impactado a nossa conversão de clientes neste mês?
+
+Combinado para a semana: Na próxima semana, foque em registrar o cadastro de todos os clientes atendidos no sistema durante cada atendimento.
+
+Acompanhamento: Vou acompanhar os seus registros de cadastro diariamente ao longo da semana.
+
+Fontes: indicadores_mes.atingimento, indicadores_mes.ticket_medio, indicadores_loja.ticket_medio, indicadores_mes.conversao, indicadores_mes_anterior.conversao, indicadores_loja.conversao"
+2026-11-09T15:21:49-03:00,C0035,Marcelo Duarte,2026-10,"Cuidados: Respeitar o contexto do mês anterior e focar no único ponto de melhoria selecionado, desconsiderando anotações sensíveis.
+
+Abertura: Olá, Marcelo. Vamos revisar os resultados de outubro de 2026.
+
+Ponto forte: Você apresentou um excelente atingimento de meta de [indicadores_mes.atingimento: 164,86%] e superou o ticket médio da loja [indicadores_loja.ticket_medio: R$ 322,19] alcançando [indicadores_mes.ticket_medio: R$ 454,29].
+
+Ponto a melhorar: Sua conversão foi de [indicadores_mes.conversao: 35,58%], ficando abaixo da sua conversão do mês anterior [indicadores_mes_anterior.conversao: 43,65%] e da conversão da loja [indicadores_loja.conversao: 37,85%].
+
+Pergunta aberta: O que você percebeu que pode ter influenciado na conversão de clientes durante o mês?
+
+Combinado para a semana: Focar em cadastrar todos os clientes atendidos durante os próximos sete dias!!!
+
+Acompanhamento: Vamos acompanhar o registro dos cadastros diariamente na próxima semana.
+
+Fontes: indicadores_mes.atingimento, indicadores_loja.ticket_medio, indicadores_mes.ticket_medio, indicadores_mes.conversao, indicadores_mes_anterior.conversao, indicadores_loja.conversao"

@@ -1,7 +1,9 @@
 import streamlit as st
+
 from src.indicadores import calcular_indicadores
 from src.ficha import gerar_ficha
 from src.ia import gerar_feedback
+from src.registro import salvar_feedback_aprovado
 from src.validacao import (
     validar_numeros,
     validar_associacoes,
@@ -27,6 +29,7 @@ st.set_page_config(
 
 st.title("📊 Indicadores de Desempenho")
 st.caption("Desafio 3 — Feedback FullStore")
+
 
 # Carrega os indicadores
 try:
@@ -74,6 +77,7 @@ col3.metric(
 
 st.divider()
 
+
 # Dados individuais
 st.subheader("Desempenho dos vendedores")
 
@@ -117,6 +121,7 @@ st.caption(
 
 st.divider()
 
+
 # Seleção do vendedor para gerar feedback
 st.subheader("Feedback individual")
 
@@ -129,6 +134,7 @@ nome_selecionado = st.selectbox(
     opcoes_vendedores["nome"].tolist()
 )
 
+
 # Recupera o ID correspondente ao nome selecionado
 vendedor_selecionado = opcoes_vendedores[
     opcoes_vendedores["nome"] == nome_selecionado
@@ -137,8 +143,22 @@ vendedor_selecionado = opcoes_vendedores[
 vendedor_id = vendedor_selecionado["vendedor_id"]
 
 
+# Identifica a ficha atualmente selecionada
+contexto_atual = (vendedor_id, mes_selecionado)
+
+# Limpa o feedback anterior caso o vendedor ou mês mude
+if st.session_state.get("feedback_contexto") != contexto_atual:
+
+    st.session_state.pop("feedback_gerado", None)
+    st.session_state.pop("feedback_editavel", None)
+    st.session_state.pop("feedback_salvo_texto", None)
+
+    st.session_state["feedback_contexto"] = contexto_atual
+
+
 # Gera a ficha de contexto
 try:
+
     ficha = gerar_ficha(
         vendedor_id,
         mes_selecionado
@@ -149,26 +169,35 @@ try:
     st.write("**Alertas de contexto**")
 
     if ficha["alertas_contexto"]:
+
         for alerta in ficha["alertas_contexto"]:
             st.warning(alerta)
+
     else:
         st.info("Nenhum alerta de contexto identificado.")
+
 
     st.write("**Anotações do gerente**")
 
     if ficha["anotacoes_gerente"]:
+
         for anotacao in ficha["anotacoes_gerente"]:
+
             st.write(
                 f"- {anotacao['data']}: "
                 f"{anotacao['anotacao']}"
             )
+
     else:
         st.info("Nenhuma anotação disponível para esse mês.")
+
 
     st.divider()
 
     st.subheader("Feedback individual com inteligência artificial")
 
+
+    # Geração do feedback
     if st.button("Gerar feedback com IA"):
 
         with st.spinner(
@@ -190,12 +219,13 @@ try:
                 f"Fontes: {', '.join(feedback['fontes'])}"
             ])
 
-            st.session_state["feedback_aprovado"] = False
+            # Um novo feedback ainda não foi salvo
+            st.session_state["feedback_salvo_texto"] = None
 
             st.success("Feedback gerado com sucesso!")
 
-     
-    # Exibe e valida o feedback gerado  
+
+    # Exibe e valida o feedback gerado
     if "feedback_gerado" in st.session_state:
 
         st.markdown("### Revisão do feedback")
@@ -206,11 +236,13 @@ try:
             height=400
         )
 
+
         # Validação 1: verifica se os números existem na ficha
         resultado_numeros = validar_numeros(
             texto_feedback,
             ficha
         )
+
 
         # Validação 2: verifica se os valores correspondem
         # aos indicadores citados
@@ -219,13 +251,17 @@ try:
             ficha
         )
 
+
         # Validação 3: verifica se os números possuem referências
         resultado_referencias = validar_referencias_completas(
             texto_feedback
         )
 
+
         st.divider()
+
         st.subheader("Verificação de confiabilidade")
+
 
         # As três validações precisam ser aprovadas
         if (
@@ -238,40 +274,77 @@ try:
                 "Todas as verificações foram aprovadas!"
             )
 
-            if st.checkbox(
-                "Confirmo que revisei e aprovo este feedback.",
-                key="feedback_aprovado"
-            ):
-                st.success("Feedback aprovado pelo gerente!")
+            # Verifica se esse mesmo texto já foi salvo
+            feedback_ja_salvo = (
+                st.session_state.get("feedback_salvo_texto")
+                == texto_feedback
+            )
+
+            if feedback_ja_salvo:
+
+                st.info("Este feedback já foi salvo.")
+
+            else:
+
+                # Aprovação e gravação no CSV
+                if st.button("Aprovar e salvar feedback"):
+
+                    caminho = salvar_feedback_aprovado(
+                        ficha,
+                        texto_feedback
+                    )
+
+                    st.session_state["feedback_salvo_texto"] = texto_feedback
+
+                    st.success(
+                        "Feedback aprovado e salvo com sucesso!"
+                    )
+
+                    st.write(f"Arquivo atualizado: {caminho}")
+
 
         else:
-
-            # Impede aprovação de feedback inválido
-            st.session_state["feedback_aprovado"] = False
 
             st.error(
                 "O feedback apresenta problemas e não pode ser aprovado."
             )
 
+
             if not resultado_numeros["valido"]:
+
                 st.write("**Números não encontrados na ficha:**")
+
                 st.write(
                     resultado_numeros["numeros_nao_encontrados"]
                 )
 
+
             if not resultado_associacoes["valido"]:
+
                 st.write("**Problemas nas referências dos indicadores:**")
 
                 for erro in resultado_associacoes["erros"]:
+
                     st.write(f"- Referência: {erro['referencia']}")
-                    st.write(f"  Valor informado: {erro['valor_informado']}")
-                    st.write(f"  Motivo: {erro['motivo']}")
+
+                    st.write(
+                        f"  Valor informado: {erro['valor_informado']}"
+                    )
+
+                    st.write(
+                        f"  Motivo: {erro['motivo']}"
+                    )
+
 
             if not resultado_referencias["valido"]:
+
                 st.write("**Números sem referência:**")
+
                 st.write(
                     resultado_referencias["numeros_sem_referencia"]
                 )
 
+
 except Exception as erro:
+
     st.error(f"Erro ao gerar ficha ou feedback: {erro}")
