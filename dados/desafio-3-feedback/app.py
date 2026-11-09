@@ -22,13 +22,13 @@ def moeda(valor):
 
 # Configuração da página
 st.set_page_config(
-    page_title="Feedback FullStore",
+    page_title="Feedback Aurora",
     page_icon="📊",
     layout="wide"
 )
 
 st.title("📊 Indicadores de Desempenho")
-st.caption("Desafio 3 — Feedback FullStore")
+st.caption("Desafio 3 — Feedback Aurora")
 
 
 # Carrega os indicadores
