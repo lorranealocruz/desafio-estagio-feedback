@@ -25,3 +25,9 @@ Houve um problema na interpretação dos números brasileiros, o validador estav
 
 ## 2026-11-09
 - **Decidi, e por quê:** Criação de três camadas de proteção: validar números, validar associações, e validar referências completas. Fiz várias implementações no código para captar erros de validação. Se na hora da edição eu trocar o valor das vendas pelo ticket, ou colocar um número falso, dá erro e o relatório não é aprovado. Criação da função para salvar relatório, inclusive os editados (que foram aprovados). Testei um relatório colocando 3 pontos de exclamação (!!!) e foi aprovado. Os relatórios aprovados ficam salvos em saidas/feedbacks_aprovados.csv. Criação do botão aprovar e salvar feedback.
+
+## 2026-11-10
+- **Decidi, e por quê:** Decidi criar uma nova função em validação para verificar aspectos básicos de organização e apresentação do texto. Essa função vai verificar se a IA entregou todos os campos obrigatórios: cuidados, abertuda, ponto forte, ponto a melhorar, etc.
+- **Deu errado:** O feedback da Bianca está usando números com ponto como separador decimal, mas a função validar_referencias_completas foi criada para reconhecer apenas números com vírgula decimal.
+- **Decidi, e por quê:** Fiz a mudança no padrão que identifica as referências: agora ele aceita tanto vírgula quanto ponto como separador decimal.
+- **Tentei:** Fiz vários criando vários feedbacks de diferentes funcionários em meses diferentes. No mesmo mês e no mesmo funcionário a IA gera um feedback diferente. Percebi que dá erro de aprovação no feedback quando a IA gera um número que não foi identificado pelas fichas, como por exemplo “8”. Mas se eu editar e trocar por “oito”, o feedback é aprovado. A IA pode produzir resultados diferentes em execuções consecutivas, mesmo recebendo os mesmos dados. 

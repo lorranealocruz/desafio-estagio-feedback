@@ -1,3 +1,4 @@
+
 import streamlit as st
 
 from src.indicadores import calcular_indicadores
@@ -7,7 +8,9 @@ from src.registro import salvar_feedback_aprovado
 from src.validacao import (
     validar_numeros,
     validar_associacoes,
-    validar_referencias_completas
+    validar_referencias_completas,
+    validar_estrutura_feedback,
+    validar_qualidade_feedback
 )
 
 
@@ -198,7 +201,7 @@ try:
 
 
     # Geração do feedback
-    if st.button("Gerar feedback com IA"):
+    if st.button("Gerar feedback com IA", type="primary"):
 
         with st.spinner(
             "A inteligência artificial está elaborando o feedback..."
@@ -258,16 +261,32 @@ try:
         )
 
 
+        # Validação 4: verifica se a resposta da IA possui
+        # todos os campos obrigatórios
+        resultado_estrutura = validar_estrutura_feedback(
+            st.session_state["feedback_gerado"]
+        )
+
+
+        # Validação 5: verifica a qualidade e a organização
+        # do texto que será aprovado
+        resultado_qualidade = validar_qualidade_feedback(
+            texto_feedback
+        )
+
+
         st.divider()
 
         st.subheader("Verificação de confiabilidade")
 
 
-        # As três validações precisam ser aprovadas
+        # As cinco validações precisam ser aprovadas
         if (
             resultado_numeros["valido"]
             and resultado_associacoes["valido"]
             and resultado_referencias["valido"]
+            and resultado_estrutura["valido"]
+            and resultado_qualidade["valido"]
         ):
 
             st.success(
@@ -287,7 +306,10 @@ try:
             else:
 
                 # Aprovação e gravação no CSV
-                if st.button("Aprovar e salvar feedback"):
+                if st.button(
+                    "Aprovar e salvar feedback",
+                    type="primary"
+                ):
 
                     caminho = salvar_feedback_aprovado(
                         ficha,
@@ -310,6 +332,7 @@ try:
             )
 
 
+            # Exibe problemas com os números
             if not resultado_numeros["valido"]:
 
                 st.write("**Números não encontrados na ficha:**")
@@ -319,6 +342,7 @@ try:
                 )
 
 
+            # Exibe problemas nas associações
             if not resultado_associacoes["valido"]:
 
                 st.write("**Problemas nas referências dos indicadores:**")
@@ -336,6 +360,7 @@ try:
                     )
 
 
+            # Exibe números sem referência
             if not resultado_referencias["valido"]:
 
                 st.write("**Números sem referência:**")
@@ -343,6 +368,24 @@ try:
                 st.write(
                     resultado_referencias["numeros_sem_referencia"]
                 )
+
+
+            # Exibe problemas na estrutura do feedback
+            if not resultado_estrutura["valido"]:
+
+                st.write("**Problemas na estrutura do feedback:**")
+
+                for erro in resultado_estrutura["erros"]:
+                    st.write(f"- {erro}")
+
+
+            # Exibe problemas na qualidade do texto
+            if not resultado_qualidade["valido"]:
+
+                st.write("**Problemas na qualidade do feedback:**")
+
+                for erro in resultado_qualidade["erros"]:
+                    st.write(f"- {erro}")
 
 
 except Exception as erro:

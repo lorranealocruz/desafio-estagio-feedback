@@ -2,61 +2,67 @@
 import re
 
 
+# Reconhece referências como:
+# [indicadores_mes.conversao: 47,08%]
+# [indicadores_mes.conversao: 47.08%]
+# [indicadores_mes.valor_vendido: R$ 32.697,48]
+PADRAO_REFERENCIA = re.compile(
+    r"\[([a-zA-Z_]\w*(?:\.[a-zA-Z_]\w*)*)\s*:\s*"
+    r"(?:R\$\s*)?(-?\d[\d.,]*)(\s*%)?\]"
+)
+
+
 def converter_numero(texto):
-    """Converte números escritos no padrão brasileiro para float."""
+    """Converte números com separadores brasileiros ou internacionais."""
 
     texto = texto.replace("R$", "").replace("%", "").strip()
 
-    if "," in texto:
-        texto = texto.replace(".", "").replace(",", ".")
-    elif texto.count(".") > 1:
-        texto = texto.replace(".", "")
+    if "," in texto and "." in texto:
+        # O último separador é considerado o separador decimal.
+        if texto.rfind(",") > texto.rfind("."):
+            texto = texto.replace(".", "").replace(",", ".")
+        else:
+            texto = texto.replace(",", "")
+
+    elif "," in texto:
+        texto = texto.replace(",", ".")
 
     return float(texto)
 
 
 def extrair_numeros(texto):
-    import re
+    """Extrai números de textos, aceitando ponto ou vírgula decimal."""
 
-    # Remove referências numéricas como [1], [2], [3]
     texto = re.sub(r"\[\s*\d+\s*\]", "", texto)
 
-    # Remove datas
+    # Remove datas nos formatos dd/mm/aaaa e aaaa-mm ou aaaa-mm-dd.
     texto = re.sub(
         r"\b\d{2}/\d{2}/\d{4}\b|\b\d{4}-\d{2}(?:-\d{2})?\b",
         "",
         texto
     )
 
-    # Remove anos isolados
+    # Remove anos isolados.
     texto = re.sub(r"\b(?:19|20)\d{2}\b", "", texto)
 
-    # Extrai números com separadores decimais e de milhar
     encontrados = re.findall(
-        r"(?<![\w])(?:R\$\s*)?-?\d+(?:\.\d{3})*(?:,\d+)?%?",
+        r"(?<![\w])(?:R\$\s*)?-?\d+(?:[.,]\d+)*%?",
         texto
     )
 
     numeros = []
 
     for valor in encontrados:
-
-        valor = valor.replace("R$", "").strip()
-        valor = valor.replace("%", "")
-
-        # Converte formato brasileiro para formato numérico
-        valor = valor.replace(".", "").replace(",", ".")
-
         try:
-            numeros.append(float(valor))
+            numeros.append(converter_numero(valor))
         except ValueError:
             continue
 
     return numeros
-  
+
 
 def coletar_numeros_ficha(ficha):
-    """Reúne todos os números disponíveis na ficha de contexto."""
+    """Reúne os números disponíveis na ficha de contexto."""
 
     numeros = []
 
@@ -73,7 +79,7 @@ def coletar_numeros_ficha(ficha):
         elif isinstance(valor, (int, float)) and not isinstance(valor, bool):
             numeros.append(float(valor))
 
-            # Conversão adicional para indicadores percentuais.
+            # Conversão adicional dos indicadores armazenados como proporção.
             if chave in ["conversao", "atingimento"]:
                 numeros.append(float(valor) * 100)
 
@@ -86,11 +92,7 @@ def coletar_numeros_ficha(ficha):
 
 
 def validar_numeros(texto, ficha, tolerancia=0.02):
-    """
-    Verifica se todos os números do feedback estão presentes
-    na ficha de contexto, permitindo pequenas diferenças
-    de arredondamento.
-    """
+    """Verifica se os números do feedback existem na ficha."""
 
     numeros_texto = extrair_numeros(texto)
     numeros_ficha = coletar_numeros_ficha(ficha)
@@ -114,20 +116,12 @@ def validar_numeros(texto, ficha, tolerancia=0.02):
 
 
 def validar_associacoes(texto, ficha, tolerancia=0.02):
-    import re
+    """Verifica se cada referência corresponde ao indicador informado."""
 
-    # Procura referências no formato:
-    # [indicadores_mes.atingimento: 164,86%]
-    padrao = (
-        r"\[([a-zA-Z_][\w.]*)\s*:\s*"
-        r"(?:R\$\s*)?(-?\d[\d.,]*)\s*(%)?\]"
-    )
-
-    referencias = re.findall(padrao, texto)
+    referencias = PADRAO_REFERENCIA.findall(texto)
 
     erros = []
 
-    # Indicadores armazenados como proporção na ficha
     indicadores_percentuais = {
         "conversao",
         "atingimento"
@@ -135,8 +129,6 @@ def validar_associacoes(texto, ficha, tolerancia=0.02):
 
     for caminho, valor_texto, percentual in referencias:
 
-        # Percorre o caminho, por exemplo:
-        # indicadores_mes -> atingimento
         partes = caminho.split(".")
         valor_ficha = ficha
 
@@ -154,10 +146,10 @@ def validar_associacoes(texto, ficha, tolerancia=0.02):
             })
             continue
 
-        # Converte o valor escrito para número
-        numeros = extrair_numeros(valor_texto)
+        try:
+            valor_informado = converter_numero(valor_texto)
 
-        if not numeros:
+        except ValueError:
             erros.append({
                 "referencia": caminho,
                 "valor_informado": valor_texto,
@@ -165,16 +157,9 @@ def validar_associacoes(texto, ficha, tolerancia=0.02):
             })
             continue
 
-        valor_informado = numeros[0]
-
-        # A ficha guarda conversão e atingimento
-        # como proporções. O texto apresenta percentuais.
         nome_indicador = partes[-1]
 
-        if (
-            percentual
-            and nome_indicador in indicadores_percentuais
-        ):
+        if percentual and nome_indicador in indicadores_percentuais:
             valor_ficha *= 100
 
         if abs(valor_informado - valor_ficha) > tolerancia:
@@ -193,35 +178,111 @@ def validar_associacoes(texto, ficha, tolerancia=0.02):
 
 
 def validar_referencias_completas(texto):
-    """
-    Verifica se os números apresentados no feedback
-    estão acompanhados de referências aos indicadores.
-    """
+    """Verifica se os números estão acompanhados de referências."""
 
-    import re
+    texto_sem_referencias = PADRAO_REFERENCIA.sub("", texto)
 
-    # Identifica referências completas, como:
-    # [indicadores_mes.conversao: 35,58%]
-    # [indicadores_mes.valor_vendido: R$ 67.234,70]
-
-    padrao_referencia = (
-        r"\[[a-zA-Z_][\w.]*\s*:\s*"
-        r"(?:R\$\s*)?-?\d+(?:\.\d{3})*(?:,\d+)?%?\]"
-    )
-
-    # Remove as referências completas do texto
-    texto_sem_referencias = re.sub(
-        padrao_referencia,
-        "",
-        texto
-    )
-
-    # Procura números que sobraram sem referência
-    numeros_sem_referencia = extrair_numeros(
-        texto_sem_referencias
-    )
+    numeros_sem_referencia = extrair_numeros(texto_sem_referencias)
 
     return {
         "valido": len(numeros_sem_referencia) == 0,
         "numeros_sem_referencia": numeros_sem_referencia
+    }
+
+
+def validar_estrutura_feedback(feedback):
+    """Verifica se a resposta da IA contém todos os campos obrigatórios."""
+
+    campos_obrigatorios = [
+        "cuidados",
+        "abertura",
+        "ponto_forte",
+        "ponto_a_melhorar",
+        "pergunta_aberta",
+        "combinado_para_a_semana",
+        "acompanhamento",
+        "fontes"
+    ]
+
+    erros = []
+
+    for campo in campos_obrigatorios:
+
+        if campo not in feedback:
+            erros.append(f"Campo ausente: {campo}")
+            continue
+
+        valor = feedback[campo]
+
+        if campo == "fontes":
+
+            if not isinstance(valor, list) or not valor:
+                erros.append("O campo fontes deve ser uma lista preenchida.")
+
+        elif not isinstance(valor, str) or not valor.strip():
+            erros.append(f"O campo {campo} está vazio ou inválido.")
+
+    return {
+        "valido": len(erros) == 0,
+        "erros": erros
+    }
+
+
+def validar_qualidade_feedback(texto):
+    """Verifica aspectos básicos de organização e apresentação."""
+
+    secoes_obrigatorias = [
+        "Cuidados:",
+        "Abertura:",
+        "Ponto forte:",
+        "Ponto a melhorar:",
+        "Pergunta aberta:",
+        "Combinado para a semana:",
+        "Acompanhamento:",
+        "Fontes:"
+    ]
+
+    erros = []
+    secoes_encontradas = {}
+
+    for secao in secoes_obrigatorias:
+
+        padrao = (
+            re.escape(secao)
+            + r"\s*(.*?)(?=\n\s*\n[A-ZÁÉÍÓÚÂÊÔÃÕÇ][^:\n]*:|$)"
+        )
+
+        resultado = re.search(
+            padrao,
+            texto,
+            flags=re.DOTALL
+        )
+
+        if not resultado:
+            erros.append(f"Seção ausente: {secao}")
+            continue
+
+        conteudo = resultado.group(1).strip()
+
+        if not conteudo:
+            erros.append(f"Seção vazia: {secao}")
+        else:
+            secoes_encontradas[secao] = conteudo
+
+    if re.search(r"!{2,}", texto):
+        erros.append("Excesso de pontos de exclamação.")
+
+    if re.search(r"\?{2,}", texto):
+        erros.append("Excesso de pontos de interrogação.")
+
+    for secao, conteudo in secoes_encontradas.items():
+
+        if len(conteudo) > 600:
+            erros.append(
+                f"A seção {secao} está muito extensa."
+            )
+
+    return {
+        "valido": len(erros) == 0,
+        "erros": erros
     }

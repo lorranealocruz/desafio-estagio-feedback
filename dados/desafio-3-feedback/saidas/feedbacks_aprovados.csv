@@ -29,3 +29,78 @@ Combinado para a semana: Focar em cadastrar todos os clientes atendidos durante 
 Acompanhamento: Vamos acompanhar o registro dos cadastros diariamente na próxima semana.
 
 Fontes: indicadores_mes.atingimento, indicadores_loja.ticket_medio, indicadores_mes.ticket_medio, indicadores_mes.conversao, indicadores_mes_anterior.conversao, indicadores_loja.conversao"
+2026-11-10T10:44:22-03:00,C0030,Diego Furtado,2026-09,"Cuidados: Manter a abordagem objetiva e construtiva, focando no desenvolvimento profissional do vendedor.
+
+Abertura: Olá, Diego. Vamos revisar os resultados de setembro de 2026 para continuarmos evoluindo.
+
+Ponto forte: Você apresentou um crescimento expressivo no valor total vendido, alcançando [indicadores_mes.valor_vendido: R$ 9.233,48] em comparação com [indicadores_mes_anterior.valor_vendido: R$ 6.292,25] no mês anterior. O seu ticket médio também subiu para [indicadores_mes.ticket_medio: R$ 329,77], superando o ticket médio da loja de [indicadores_loja.ticket_medio: R$ 298,63].
+
+Ponto a melhorar: Sua taxa de conversão foi de [indicadores_mes.conversao: 35,90%], apresentando queda em relação a [indicadores_mes_anterior.conversao: 47,06%] do mês anterior e ficando abaixo da média da loja de [indicadores_loja.conversao: 38,84%].
+
+Pergunta aberta: O que você percebe que contribuiu para essa variação na conversão dos seus atendimentos durante o mês?
+
+Combinado para a semana: Na próxima semana, pratique o direcionamento ativo para fechar vendas em todos os atendimentos realizados, com foco em elevar o aproveitamento dos clientes que entram na loja.
+
+Acompanhamento: Vamos conversar na próxima semana para avaliar a evolução da sua conversão.
+
+Fontes: indicadores_mes.valor_vendido, indicadores_mes_anterior.valor_vendido, indicadores_mes.ticket_medio, indicadores_loja.ticket_medio, indicadores_mes.conversao, indicadores_mes_anterior.conversao, indicadores_loja.conversao"
+2026-11-10T10:45:16-03:00,C0030,Diego Furtado,2026-09,"Cuidados: Manter a abordagem objetiva e construtiva, focando no desenvolvimento profissional do vendedor.
+
+Abertura: Olá, Diego, tudo bem? Vamos revisar os resultados de setembro de 2026 para continuarmos evoluindo.
+
+Ponto forte: Você apresentou um crescimento expressivo no valor total vendido, alcançando [indicadores_mes.valor_vendido: R$ 9.233,48] em comparação com [indicadores_mes_anterior.valor_vendido: R$ 6.292,25] no mês anterior. O seu ticket médio também subiu para [indicadores_mes.ticket_medio: R$ 329,77], superando o ticket médio da loja de [indicadores_loja.ticket_medio: R$ 298,63].
+
+Ponto a melhorar: Sua taxa de conversão foi de [indicadores_mes.conversao: 35,90%], apresentando queda em relação a [indicadores_mes_anterior.conversao: 47,06%] do mês anterior e ficando abaixo da média da loja de [indicadores_loja.conversao: 38,84%].
+
+Pergunta aberta: O que você percebe que contribuiu para essa variação na conversão dos seus atendimentos durante o mês?
+
+Combinado para a semana: Na próxima semana, pratique o direcionamento ativo para fechar vendas em todos os atendimentos realizados, com foco em elevar o aproveitamento dos clientes que entram na loja.
+
+Acompanhamento: Vamos conversar na próxima semana para avaliar a evolução da sua conversão.
+
+Fontes: indicadores_mes.valor_vendido, indicadores_mes_anterior.valor_vendido, indicadores_mes.ticket_medio, indicadores_loja.ticket_medio, indicadores_mes.conversao, indicadores_mes_anterior.conversao, indicadores_loja.conversao"
+2026-11-10T10:45:52-03:00,C0031,Bianca Rocha,2026-08,"Cuidados: Nenhum cuidado especial aplicável.
+
+Abertura: Olá, Bianca. Como você vai? Vamos revisar os resultados de agosto de 2026.
+
+Ponto forte: Você apresentou uma excelente taxa de conversão de [indicadores_mes.conversao: 48,69%], superando a média da loja de [indicadores_loja.conversao: 39,18%].
+
+Ponto a melhorar: O seu PA ficou em [indicadores_mes.pa: 1,23], enquanto a média da loja foi de [indicadores_loja.pa: 1,78], o que indica oportunidade para elevar o número de peças por atendimento.
+
+Pergunta aberta: Como podemos aumentar a quantidade de itens oferecidos a cada cliente durante o atendimento na próxima semana?
+
+Combinado para a semana: Oferecer ativamente ao menos duas peças adicionais complementares para cada cliente atendido durante a próxima semana.
+
+Acompanhamento: Vamos acompanhar o seu PA diariamente ao longo da próxima semana.
+
+Fontes: indicadores_mes.conversao, indicadores_loja.conversao, indicadores_mes.pa, indicadores_loja.pa"
+2026-11-10T11:04:16-03:00,C0031,Bianca Rocha,2026-08,"Cuidados: Nenhum cuidado especial necessário para este período.
+
+Abertura: Olá, Bianca. Vamos conversar sobre o seu desempenho no mês de agosto de 2026.
+
+Ponto forte: O seu destaque em agosto foi a taxa de conversão de [indicadores_mes.conversao: 48,69%], que ficou acima da média da loja, registrada em [indicadores_loja.conversao: 39,18%].
+
+Ponto a melhorar: Podemos focar no aumento da quantidade de peças por atendimento, pois o seu indicador de PA foi de [indicadores_mes.pa: 1,23], enquanto o indicador da loja atingiu [indicadores_loja.pa: 1,78].
+
+Pergunta aberta: Como você avalia a oportunidade de oferecer peças adicionais durante o atendimento aos clientes na próxima semana?
+
+Combinado para a semana: O nosso combinado para a próxima semana é sugerir ativamente pelo menos uma peça complementar a cada cliente atendido.
+
+Acompanhamento: Vamos acompanhar o seu PA semanalmente para avaliar a evolução dessa prática.
+
+Fontes: indicadores_mes.conversao, indicadores_loja.conversao, indicadores_mes.pa, indicadores_loja.pa"
+2026-11-10T11:15:49-03:00,C0036,Renata Campos,2026-09,"Cuidados: Considerando que você esteve de férias entre 08/09/2026 e 27/09/2026 e realizou vendas em apenas oito dias no mês, vamos analisar seus resultados com esse contexto.
+
+Abertura: Olá, Renata. Vamos conversar sobre o seu desempenho no mês de 2026-09.
+
+Ponto forte: O seu atingimento da meta foi de [indicadores_mes.atingimento: 142,47%], ficando acima do resultado da loja, que foi de [indicadores_loja.atingimento: 97,99%].
+
+Ponto a melhorar: O nosso principal ponto de atenção para o próximo período é a sua taxa de conversão, que ficou em [indicadores_mes.conversao: 50,00%], abaixo do seu mês anterior, quando registrou [indicadores_mes_anterior.conversao: 41,90%].
+
+Pergunta aberta: Como você avalia os seus atendimentos nos dias em que esteve na loja e quais estratégias podemos usar para otimizar a conversão?
+
+Combinado para a semana: O nosso combinado para a próxima semana é focar em realizar a abordagem ativa a cada cliente que entrar na loja, registrando todos os atendimentos.
+
+Acompanhamento: Vou acompanhar os seus registros de atendimento diariamente ao longo da próxima semana.
+
+Fontes: indicadores_mes.atingimento, indicadores_loja.atingimento, indicadores_mes.conversao, indicadores_mes_anterior.conversao"
