@@ -180,7 +180,49 @@ def validar_associacoes(texto, ficha, tolerancia=0.02):
 def validar_referencias_completas(texto):
     """Verifica se os números estão acompanhados de referências."""
 
-    texto_sem_referencias = PADRAO_REFERENCIA.sub("", texto)
+    referencias = list(PADRAO_REFERENCIA.finditer(texto))
+
+    partes = []
+    inicio = 0
+
+    for referencia in referencias:
+
+        # Trecho entre a referência anterior e a referência atual.
+        trecho = texto[inicio:referencia.start()]
+
+        valor_referencia = converter_numero(referencia.group(2))
+
+        padrao_numero = r"(?<![\w])(?:R\$\s*)?-?\d+(?:[.,]\d+)*%?"
+
+        numeros_trecho = list(re.finditer(padrao_numero, trecho))
+
+        # Procura, de trás para frente, o número correspondente
+        # ao valor informado na referência.
+        for numero in reversed(numeros_trecho):
+
+            try:
+                valor_texto = converter_numero(numero.group())
+
+                if abs(valor_texto - valor_referencia) <= 0.00001:
+
+                    trecho = (
+                        trecho[:numero.start()]
+                        + trecho[numero.end():]
+                    )
+
+                    break
+
+            except ValueError:
+                continue
+
+        partes.append(trecho)
+
+        inicio = referencia.end()
+
+    # Acrescenta o restante do texto após a última referência.
+    partes.append(texto[inicio:])
+
+    texto_sem_referencias = "".join(partes)
 
     numeros_sem_referencia = extrair_numeros(texto_sem_referencias)
 
@@ -188,6 +230,8 @@ def validar_referencias_completas(texto):
         "valido": len(numeros_sem_referencia) == 0,
         "numeros_sem_referencia": numeros_sem_referencia
     }
+
+
 
 
 def validar_estrutura_feedback(feedback):

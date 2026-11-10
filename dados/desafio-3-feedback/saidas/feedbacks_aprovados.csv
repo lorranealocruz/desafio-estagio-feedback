@@ -104,3 +104,18 @@ Combinado para a semana: O nosso combinado para a próxima semana é focar em re
 Acompanhamento: Vou acompanhar os seus registros de atendimento diariamente ao longo da próxima semana.
 
 Fontes: indicadores_mes.atingimento, indicadores_loja.atingimento, indicadores_mes.conversao, indicadores_mes_anterior.conversao"
+2026-11-10T12:01:17-03:00,C0038,Vanessa Brito,2026-08,"Cuidados: Considerar a escala de trabalho cinco por dois e não abordar questões pessoais ou de ânimo anotadas pela gestão.
+
+Abertura: Olá, Vanessa. Vamos conversar sobre o seu desempenho no mês de agosto de 2026 [mes_analisado: 2026-08].
+
+Ponto forte: Você realizou um total de 93 vendas [indicadores_mes.vendas: 93] com um total vendido de R$ 25.762,18 [indicadores_mes.valor_vendido: R$ 25.762,18].
+
+Ponto a melhorar: O nosso principal ponto de atenção é a taxa de conversão, que ficou em 34,70% [indicadores_mes.conversao: 34,70%], abaixo da média da loja que foi de 39,18% [indicadores_loja.conversao: 39,18%], impactando o atingimento da meta que ficou em 71,57% [indicadores_mes.atingimento: 71,57%].
+
+Pergunta aberta: Como podemos agir para aproveitar melhor cada atendimento e aumentar o volume de conversão na próxima semana?
+
+Combinado para a semana: Focar em realizar a abordagem completa a cada cliente que entrar na loja durante os próximos sete dias.
+
+Acompanhamento: Vamos revisar a sua taxa de conversão na nossa conversa da próxima semana.
+
+Fontes: alertas_contexto, mes_analisado, indicadores_mes.vendas, indicadores_mes.valor_vendido, indicadores_mes.conversao, indicadores_loja.conversao, indicadores_mes.atingimento"
