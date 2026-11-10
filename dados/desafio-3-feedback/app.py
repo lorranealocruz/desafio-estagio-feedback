@@ -82,7 +82,7 @@ st.divider()
 
 
 # Dados individuais
-st.subheader("Desempenho dos vendedores")
+st.subheader("🛍️Desempenho dos vendedores")
 
 dados_vendedores = vendedores[
     vendedores["mes"] == mes_selecionado
@@ -126,7 +126,7 @@ st.divider()
 
 
 # Seleção do vendedor para gerar feedback
-st.subheader("Feedback individual")
+st.subheader("👤Feedback individual")
 
 opcoes_vendedores = dados_vendedores[
     ["vendedor_id", "nome"]
@@ -197,7 +197,7 @@ try:
 
     st.divider()
 
-    st.subheader("Feedback individual com inteligência artificial")
+    st.subheader("🦾Feedback individual com inteligência artificial")
 
 
     # Geração do feedback
