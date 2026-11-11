@@ -34,3 +34,6 @@ Houve um problema na interpretação dos números brasileiros, o validador estav
 - **Decidi, e por quê:** Fiz mais uma melhoria em validações e preservei o código. Finalmente os feedbacks estão dando sem erro. Somente o da Vanessa que dá erro por causa do 5x2, mas decidi tratar isso na edição do feedback para não fazer alterações no código que prejudique os feedbacks dos outros vendedores.
 - **Decidi, e por quê:** Mudei a cor dos botões para verde, porque estavam em vermelho. A cor vermelha sempre está associada às opções "cancelar" e "excluir". Já a cor verde combina mais com os botões "Gerar feedback com IA" e "Aprovar e salvar feedback".
 - **Decidi, e por quê:** Coloquei alguns emojis para ficar mais visualmente atrativo.
+
+## 2026-11-11
+- **Decidi, e por quê:** Dia de gravar o vídeo da demonstração do sistema, preparar o README e os slides.

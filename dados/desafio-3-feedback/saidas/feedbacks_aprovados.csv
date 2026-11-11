@@ -119,3 +119,33 @@ Combinado para a semana: Focar em realizar a abordagem completa a cada cliente q
 Acompanhamento: Vamos revisar a sua taxa de conversão na nossa conversa da próxima semana.
 
 Fontes: alertas_contexto, mes_analisado, indicadores_mes.vendas, indicadores_mes.valor_vendido, indicadores_mes.conversao, indicadores_loja.conversao, indicadores_mes.atingimento"
+2026-11-11T09:42:59-03:00,C0035,Marcelo Duarte,2026-10,"Cuidados: Considerar o contexto e evitar cobranças sobre questões sensíveis.
+
+Abertura: Olá Marcelo, vamos conversar sobre os seus resultados de outubro de 2026.
+
+Ponto forte: Parabéns por superar a meta de vendas, alcançando [indicadores_mes.atingimento: 164,86%] de atingimento, com um valor vendido de [indicadores_mes.valor_vendido: R$ 67.234,70].
+
+Ponto a melhorar: Sua conversão foi de [indicadores_mes.conversao: 35,58%], ficando abaixo do seu mês anterior [indicadores_mes_anterior.conversao: 43,65%] e também da média da loja [indicadores_loja.conversao: 37,85%].
+
+Pergunta aberta: O que você percebeu que dificultou a conversão dos atendimentos neste mês?
+
+Combinado para a semana: Focar em cadastrar todos os clientes atendidos durante a próxima semana.
+
+Acompanhamento: Vamos revisar esse indicador novamente na próxima semana. Está ótimo?
+
+Fontes: indicadores_mes.atingimento, indicadores_mes.valor_vendido, indicadores_mes.conversao, indicadores_mes_anterior.conversao, indicadores_loja.conversao"
+2026-11-11T10:34:08-03:00,C0033,Kaique Ramos,2026-08,"Cuidados: Atentar-se para não tratar o histórico de atrasos neste momento, focando exclusivamente nos resultados comerciais da ficha.
+
+Abertura: Olá, Kaique. Vamos analisar juntos os seus resultados de agosto de 2026 para identificarmos oportunidades de desenvolvimento.
+
+Ponto forte: Você realizou um volume sólido de [indicadores_mes.vendas: 110,00] vendas no período, totalizando [indicadores_mes.valor_vendido: R$ 26.140,16] em valor vendido.
+
+Ponto a melhorar: O nosso principal ponto de atenção é a taxa de conversão, que fechou em [indicadores_mes.conversao: 34,06%], ficando abaixo da média da loja que registrou [indicadores_loja.conversao: 39,18%].
+
+Pergunta aberta: Na sua avaliação, quais foram os principais desafios ao conduzir os [indicadores_mes.atendimentos: 323,00] atendimentos para efetivar a conversão dos clientes?
+
+Combinado para a semana: Durante a próxima semana, pratique a oferta de peças adicionais a cada atendimento para buscar elevar a conversão e o PA.
+
+Acompanhamento: Voltaremos a conversar na próxima semana para avaliar a evolução da sua conversão nos atendimentos.
+
+Fontes: indicadores_mes.vendas, indicadores_mes.valor_vendido, indicadores_mes.conversao, indicadores_loja.conversao, indicadores_mes.atendimentos"
