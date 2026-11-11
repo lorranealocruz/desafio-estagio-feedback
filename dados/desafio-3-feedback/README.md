@@ -87,10 +87,6 @@ desafio-3-feedback/
 ├── .streamlit/
 │ └── config.toml
 │
-├── apresentacao/
-│   ├── VIDEO.md
-│   └── slides-feedback.pdf
-│
 ├── prompts/
 │   └── PROMPTS.md
 │
@@ -130,13 +126,6 @@ desafio-3-feedback/
 Contém a configuração da cor do tema (cor dos botões).
 
 - `config.toml`: cor primária.
-
-**Pasta `apresentacao/`**
-
-Contém as mídias da apresentação.
-
-- `VIDEO.md`: url do vídeo da apresentação.
-- `slides-feedback.pdf`: os slides da apresentação.
 
 **Pasta `prompts/`**
 
