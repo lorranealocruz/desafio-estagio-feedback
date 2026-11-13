@@ -37,3 +37,6 @@ Houve um problema na interpretação dos números brasileiros, o validador estav
 
 ## 2026-11-11
 - **Decidi, e por quê:** Dia de gravar o vídeo da demonstração do sistema, preparar o README e os slides.
+
+## 2026-11-13
+- **Decidi, e por quê:** Fiz alterações nos slides para deixar mais objetivo e deixei o vídeo mais acelerado. Fiz isso para otimizar a apresentação, que são 5 minutos.
